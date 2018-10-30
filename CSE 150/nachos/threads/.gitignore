@@ -25,3 +25,5 @@
 /SynchList.class
 /ThreadQueue.class
 /ThreadedKernel.class
+/Alarm$waitingQueue.class
+/Alarm$threadComparator.class
