@@ -277,7 +277,7 @@ public class KThread {
     	Lib.assertTrue(this != currentThread);
     	if(this.status ==statusFinished) { //If the status is finished then return to null
     		return;
-    	}
+    	} 
     	if(this.status !=statusFinished && this.status != statusNew) {
     		boolean intstatus = Machine.interrupt().disable(); 
     		readyQueue.waitForAccess(KThread.currentThread());
