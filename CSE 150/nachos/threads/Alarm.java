@@ -24,7 +24,7 @@ public class Alarm {
     }
     
     threadComparator comparator = new threadComparator();
-    PriorityQueue<waitingQueue> priorityThreadQueue = new PriorityQueue<waitingQueue>(1, comparator); //Priority queue to hold threads
+    PriorityQueue<waitingQueue> priorityThreadQueue = new PriorityQueue<waitingQueue>(1, comparator); // Queue to hold threads
 
     /**
      * The timer interrupt handler. This is called by the machine's timer

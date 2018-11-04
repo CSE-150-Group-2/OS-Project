@@ -10,12 +10,11 @@ import nachos.machine.*;
  * threads can be paired off at this point.
  */
 public class Communicator {
-    private Lock lock =null;
-    private Condition activespeaker;
-    private Condition activelistener;
-	private int speak=0;
-	private int listen=0;
+    public Lock lock= new Lock();
+    public Condition speaker= new Condition (lock);
+    public Condition listener= new Condition (lock);
 	private int number;
+	private boolean activate= false;
 //	private Condition ;
 
 	/**
@@ -35,11 +34,6 @@ public class Communicator {
 	 *  	one message by one listener using condition variable
 	 */
     public Communicator() {
-    	lock=new Lock();
-         activespeaker = new Condition(lock);
-         activelistener = new Condition(lock);
-
-
     }
 
     /**
@@ -70,13 +64,13 @@ public class Communicator {
     
     public void speak(int word) {
     	lock.acquire();
-    	speak++;
-    	while(listen==0) {
-    		activelistener.sleep();
+    	while(activate) {
+    		speaker.sleep();
     	}
-    	listen--;
     	number=word;
-    	activespeaker.wake();
+    	activate=true;
+    	listener.wake();
+    	speaker.sleep();
     	lock.release();
     }
 
@@ -96,13 +90,13 @@ public class Communicator {
     
    public int listen() {
     	lock.acquire();
-    	listen++;
-    	activelistener.wake();
-    	while(speak==0) {
-    		activespeaker.sleep();
+    	while(!activate) {
+    		listener.sleep();
     	}
-    	speak--;
+    	activate=false;
+    	int num = number;
+    	speaker.wakeAll();
     	lock.release();
-    	return number;
+    	return num;
    }
 }
